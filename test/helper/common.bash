@@ -269,6 +269,14 @@ function _wait_for_smtp_port_in_container_to_respond() {
   done
 }
 
+# Wait for RSPAMD port (11332) to become ready.
+#
+# @param ${1} = name of the container [OPTIONAL]
+function _wait_for_rspamd_port_in_container() {
+  local CONTAINER_NAME=$(__handle_container_name "${1:-}")
+  _wait_for_tcp_port_in_container 11332
+}
+
 # Checks whether a service is running inside a container (${1}).
 #
 # @param ${1} = service name
@@ -364,11 +372,12 @@ function _reload_postfix() {
 }
 
 # Get the IP of the container (${1}).
+# This uses the "bridge" network IPAddress and doesn't consider other docker networks.
 #
 # @param ${1} = container name [OPTIONAL]
 function _get_container_ip() {
   local TARGET_CONTAINER_NAME=$(__handle_container_name "${1:-}")
-  docker inspect --format '{{ .NetworkSettings.IPAddress }}' "${TARGET_CONTAINER_NAME}"
+  docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' "${TARGET_CONTAINER_NAME}"
 }
 
 # Check if a container is running.

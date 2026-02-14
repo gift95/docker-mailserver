@@ -32,7 +32,7 @@ jobs:
     name: 'Build Preview'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       # ================== #
       # Build docs preview #
@@ -67,7 +67,7 @@ jobs:
 
       # Archives directory `path` into a ZIP file:
       - name: 'Upload artifact for workflow transfer'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: preview-build
           path: ${{ env.BUILD_DIR }}
